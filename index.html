@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>தாஸ் பொது சேவை மையம் - பங்கு பரிந்துரை (NSE Reports)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&display=swap');
+
+  :root{
+    --orange:#e05a12;
+    --orange-dark:#b8440b;
+    --blue:#0b5aa0;
+    --green:#1a8a4a;
+    --red:#c62828;
+    --gray-bg:#f4f5f7;
+    --border:#d8dade;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Noto Sans Tamil','Segoe UI',sans-serif;
+    background:var(--gray-bg);
+    margin:0;
+    padding:0;
+    color:#222;
+  }
+  header{
+    background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+    color:#fff;
+    padding:18px 20px;
+    text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  header h1{margin:0;font-size:22px;}
+  header p{margin:4px 0 0;font-size:13px;opacity:.9;}
+
+  .container{max-width:1150px;margin:16px auto;padding:0 12px;}
+
+  .panel{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px;
+    margin-bottom:14px;
+  }
+  .panel h3{margin:0 0 10px;font-size:15px;color:var(--blue);border-bottom:1px solid var(--border);padding-bottom:6px;}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .toolbar .group{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  label.filebtn{
+    background:var(--blue);color:#fff;padding:9px 16px;border-radius:6px;
+    cursor:pointer;font-size:13px;font-weight:600;display:inline-block;
+  }
+  label.filebtn.multi{background:var(--orange);}
+  input[type=file]{display:none;}
+  input[type=date], select.plain{
+    padding:8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;
+  }
+  button{
+    border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;
+    cursor:pointer;color:#fff;
+  }
+  button.blue{background:var(--blue);}
+  button.orange{background:var(--orange);}
+  button.green{background:var(--green);}
+  button.gray{background:#666;}
+  button.red{background:var(--red);}
+  button.wa{background:#25D366;}
+  button:hover{filter:brightness(1.08);}
+
+  .hint{font-size:12px;color:#777;width:100%;margin-top:4px;}
+  .checkline{font-size:13px;display:flex;align-items:center;gap:6px;}
+
+  #reportLog{font-size:12px;color:#333;margin-top:10px;background:#f7f8fa;border:1px dashed var(--border);border-radius:6px;padding:8px;max-height:140px;overflow-y:auto;}
+  #reportLog div{padding:2px 0;}
+  .tag-ok{color:var(--green);font-weight:700;}
+  .tag-warn{color:#a06a00;font-weight:700;}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 1px 4px rgba(0,0,0,.08);
+  }
+  thead tr{background:var(--blue);color:#fff;}
+  th,td{
+    border:1px solid var(--border);
+    padding:8px 6px;
+    font-size:13px;
+    text-align:center;
+  }
+  th{font-weight:700;white-space:nowrap;}
+  tbody tr:nth-child(even){background:#fafbfc;}
+  td input, td select{
+    width:100%;
+    border:1px solid transparent;
+    background:transparent;
+    text-align:center;
+    font-size:13px;
+    padding:4px 2px;
+    border-radius:4px;
+    font-family:inherit;
+  }
+  td input:focus, td select:focus{
+    border:1px solid var(--blue);
+    background:#fff;
+  }
+  td.name input{text-align:left;font-weight:600;min-width:100px;}
+  td.reason input{text-align:left;}
+  td.reason{min-width:220px;}
+
+  .rec-BUY{color:var(--green);font-weight:700;}
+  .rec-SELL{color:var(--red);font-weight:700;}
+  .rec-HOLD{color:#a06a00;font-weight:700;}
+
+  .del-btn{background:var(--red);padding:4px 8px;font-size:11px;}
+
+  .tablewrap{overflow-x:auto;}
+
+  .dash-cards{display:flex;gap:12px;flex-wrap:wrap;}
+  .dcard{
+    flex:1;min-width:110px;
+    border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;
+    border:2px solid transparent;
+    transition:transform .1s ease;
+    color:#fff;
+  }
+  .dcard:hover{transform:translateY(-2px);}
+  .dcard.active{border-color:#222;}
+  .dcard-all{background:#546578;}
+  .dcard-buy{background:var(--green);}
+  .dcard-sell{background:var(--red);}
+  .dcard-hold{background:#c98a12;}
+  .dcount{font-size:26px;font-weight:700;}
+  .dlabel{font-size:13px;margin-top:2px;}
+
+  footer{text-align:center;padding:16px;font-size:12px;color:#888;}
+  .updated-note{font-size:12px;color:#777;margin:8px 2px;}
+
+  @media print{
+    @page{ size: landscape; margin: 10mm; }
+    header, .panel.no-print, footer, .del-col{display:none !important;}
+    body{background:#fff;}
+    .container{max-width:100%;margin:0;padding:0;}
+    .tablewrap, #stockTable{display:none !important;}
+    #printTable{display:block !important;}
+    .print-header{display:block !important;}
+  }
+  .print-header{display:none;text-align:center;margin-bottom:10px;}
+  .print-header h2{margin:0;}
+  .print-header p{margin:2px 0;font-size:12px;color:#555;}
+
+  #printTable{display:none;}
+  #printTable table{
+    width:100%;border-collapse:collapse;font-size:12px;
+  }
+  #printTable th, #printTable td{
+    border:1px solid #999;padding:6px 5px;text-align:center;
+  }
+  #printTable th{background:#0b5aa0;color:#fff;}
+  #printTable td.pname{text-align:left;font-weight:600;}
+  #printTable td.preason{text-align:left;}
+  #printTable tr:nth-child(even){background:#f5f6f8;}
+  #printTable .prec-BUY{color:#1a8a4a;font-weight:700;}
+  #printTable .prec-SELL{color:#c62828;font-weight:700;}
+  #printTable .prec-HOLD{color:#a06a00;font-weight:700;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>தாஸ் பொது சேவை மையம்</h1>
+  <p>NSE Reports ஒப்பீடு - நாளைய தின பங்கு பரிந்துரை</p>
+</header>
+
+<div class="container">
+
+  <div class="print-header">
+    <h2>தாஸ் பொது சேவை மையம் - பங்கு பரிந்துரை பட்டியல்</h2>
+    <p id="printDate"></p>
+  </div>
+
+  <!-- REPORT UPLOAD PANEL -->
+  <div class="panel no-print">
+    <h3>1. NSE Report கோப்புகள் பதிவேற்றம் (பல கோப்புகளை ஒரே நேரத்தில் தேர்வு செய்யலாம்)</h3>
+    <div class="toolbar">
+      <label class="filebtn multi">📁 Report CSV கோப்புகள் தேர்வு செய்
+        <input type="file" id="reportFiles" accept=".csv" multiple onchange="handleFiles(event)">
+      </label>
+      <span class="checkline">
+        <input type="checkbox" id="resetBeforeImport" checked>
+        <label for="resetBeforeImport">புதிதாக ஏற்றும் முன் பழைய தரவை காலி செய்</label>
+      </span>
+      <button class="blue" onclick="recalcAll()">மறு கணக்கீடு (Recalculate)</button>
+    </div>
+    <p class="hint">
+      அறியப்படும் Report வகைகள்: 52 Week High/Low, Upper/Lower Circuit Band, Top Gainers/Losers, Price Spurts, Volume Gainers/Spurts, Block/Bulk Deals, Pre-Open Market (MW-Pre-Open).
+      கோப்பு பெயரை வைத்து தானாக வகைப்படுத்தப்படும். ஒரே பங்கு பல reports-ல் இருந்தால் அதிக மதிப்பெண் கிடைத்து BUY/SELL பரிந்துரை வலுவாகும்.
+      <b>குறிப்பு:</b> Pre-Open Market report தனியா ஒரு புதிய பங்கை சேர்க்காது - முந்தைய நாள் reports-ல் ஏற்கனவே இருக்கும் பங்குகளை மட்டும் இன்றைய IEP விலை & Gap Up/Down வெச்சு confirm/enrich செய்யும். எல்லா கோப்புகளையும் ஒரே தடவையில் தேர்வு செய்யுங்க.
+    </p>
+    <div id="reportLog"></div>
+  </div>
+
+  <!-- DAY-WISE SAVE PANEL -->
+  <div class="panel no-print">
+    <h3>2. நாள்வாரி சேமிப்பு (Daily Save/Load)</h3>
+    <div class="toolbar">
+      <div class="group">
+        <label>தேதி:</label>
+        <input type="date" id="saveDate">
+        <button class="green" onclick="saveDay()">💾 இன்றைய பரிந்துரையை சேமி</button>
+      </div>
+      <div class="group">
+        <label>சேமிக்கப்பட்ட நாட்கள்:</label>
+        <select class="plain" id="savedDatesSelect"></select>
+        <button class="blue" onclick="loadDay()">📂 ஏற்று</button>
+        <button class="red" onclick="deleteDay()">🗑️ நீக்கு</button>
+      </div>
+    </div>
+    <p class="hint">ஒவ்வொரு நாளும் தரவு இந்த browser-லேயே (LocalStorage) சேமிக்கப்படும். வேறு கணினியில் காண export/import பயன்படுத்தவும்.</p>
+  </div>
+
+  <!-- TABLE TOOLBAR -->
+  <div class="panel no-print">
+    <h3>3. பரிந்துரை அட்டவணை - கருவிகள்</h3>
+    <div class="toolbar">
+      <div class="group">
+        <label class="filebtn">CSV இறக்குமதி
+          <input type="file" id="csvImport" accept=".csv" onchange="importCSV(event)">
+        </label>
+        <label class="filebtn" style="background:var(--green);">JSON இறக்குமதி
+          <input type="file" id="jsonImport" accept=".json" onchange="importJSON(event)">
+        </label>
+      </div>
+      <div class="group">
+        <button class="orange" onclick="addRow()">+ வரிசை சேர்</button>
+        <button class="blue" onclick="autoRecommend()">தானாக பரிந்துரை மறுகணக்கு</button>
+        <button class="gray" onclick="sortByLTP()">விலை குறைந்தது முதலில்</button>
+      </div>
+      <div class="group">
+        <button class="green" onclick="exportCSV()">CSV ஏற்றுமதி</button>
+        <button class="green" onclick="exportJSON()">JSON ஏற்றுமதி</button>
+        <button class="blue" onclick="printReport()">🖨️ பிரிண்ட்</button>
+        <button class="wa" onclick="shareWhatsApp()">📱 WhatsApp அனுப்பு</button>
+        <button class="red" onclick="clearAll()">அனைத்தும் அழி</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="panel no-print">
+    <h3>4. சுருக்க டாஸ்போர்டு (எண்ணிக்கை மீது கிளிக் செய்து வடிகட்டவும்)</h3>
+    <div class="dash-cards">
+      <div class="dcard dcard-all" id="dcard-ALL" onclick="setFilter('ALL')">
+        <div class="dcount" id="dcount-ALL">0</div>
+        <div class="dlabel">அனைத்தும்</div>
+      </div>
+      <div class="dcard dcard-buy" id="dcard-BUY" onclick="setFilter('BUY')">
+        <div class="dcount" id="dcount-BUY">0</div>
+        <div class="dlabel">BUY</div>
+      </div>
+      <div class="dcard dcard-sell" id="dcard-SELL" onclick="setFilter('SELL')">
+        <div class="dcount" id="dcount-SELL">0</div>
+        <div class="dlabel">SELL</div>
+      </div>
+      <div class="dcard dcard-hold" id="dcard-HOLD" onclick="setFilter('HOLD')">
+        <div class="dcount" id="dcount-HOLD">0</div>
+        <div class="dlabel">HOLD</div>
+      </div>
+    </div>
+    <div class="toolbar" style="margin-top:12px;">
+      <div class="group">
+        <label>LTP வரம்பு:</label>
+        <input type="number" step="0.01" id="ltpMinInput" placeholder="குறைந்தபட்சம்" style="width:120px;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;" oninput="applyLtpFilter()">
+        <span>முதல்</span>
+        <input type="number" step="0.01" id="ltpMaxInput" placeholder="அதிகபட்சம்" style="width:120px;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;" oninput="applyLtpFilter()">
+        <button class="gray" onclick="clearLtpFilter()">வரம்பு அழி</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tablewrap">
+    <table id="stockTable">
+      <thead>
+        <tr>
+          <th style="min-width:110px;">பங்கு பெயர்</th>
+          <th>LTP</th>
+          <th>மாற்றம்</th>
+          <th>%</th>
+          <th>இலக்கு</th>
+          <th>வித்தியாசம்</th>
+          <th>Stop Loss</th>
+          <th>பரிந்துரை</th>
+          <th style="min-width:220px;">காரணம்</th>
+          <th class="del-col">நீக்கு</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <p class="updated-note">கடைசி புதுப்பிப்பு: <span id="lastUpdated">-</span> | மொத்த பங்குகள்: <span id="rowCount">0</span></p>
+
+  <div id="printTable"></div>
+
+</div>
+
+<footer>
+  இந்த பரிந்துரைகள் பதிவேற்றிய NSE reports-ன் தானியங்கி ஒப்பீட்டின் அடிப்படையில் தயாரிக்கப்பட்டவை. இது முதலீட்டு ஆலோசனை அல்ல. இறுதி முடிவு உங்கள் சொந்த ஆய்வு மற்றும் ஆலோசகர் ஆலோசனையுடன் எடுக்கவும். — தாஸ் பொது சேவை மையம், தூத்துக்குடி
+</footer>
+
+<script>
+/* ================== STATE ================== */
+let rows = [];
+let idCounter = 1;
+let stockMap = {};
+const STORAGE_PREFIX = 'dhass_pangu_';
+
+/* dashboard filter state */
+let activeFilter = 'ALL';
+let ltpMin = null, ltpMax = null;
+
+const SCORE = {
+  W52H: 3, W52L: -3,
+  TOPGAIN: 2, TOPLOSE: -2,
+  PRICESPURT: 2,
+  UPPERBAND: 2, LOWERBAND: -2,
+  VOLGAIN: 1, VOLSPURT: 1,
+  DEAL_BUY: 1, DEAL_SELL: -1
+};
+const LABEL = {
+  W52H: '52 வார உச்சம்', W52L: '52 வார தாழ்வு',
+  TOPGAIN: 'Top Gainer', TOPLOSE: 'Top Loser',
+  PRICESPURT: 'Price Spurt',
+  UPPERBAND: 'Upper Circuit', LOWERBAND: 'Lower Circuit',
+  VOLGAIN: 'Volume Gainer', VOLSPURT: 'Volume Spurt',
+  BLOCK_BUY: 'Block Deal BUY', BLOCK_SELL: 'Block Deal SELL',
+  BULK_BUY: 'Bulk Deal BUY', BULK_SELL: 'Bulk Deal SELL'
+};
+
+/* ================== ROW MODEL / TABLE ================== */
+function newRow(data={}){
+  return {
+    id: idCounter++,
+    name: data.name || '',
+    ltp: data.ltp ?? '',
+    change: data.change ?? '',
+    percent: data.percent ?? '',
+    target: data.target ?? '',
+    sl: data.sl ?? '',
+    recommend: data.recommend || 'HOLD',
+    reason: data.reason || ''
+  };
+}
+function addRow(data={}){ rows.push(newRow(data)); render(); }
+function deleteRow(id){ rows = rows.filter(r => r.id !== id); render(); }
+function updateField(id, field, value){
+  const row = rows.find(r => r.id === id);
+  if(row) row[field] = value;
+  if(field === 'recommend' || field === 'ltp' || field === 'target'){
+    render();
+  } else {
+    updateMeta();
+  }
+}
+function getFilteredRows(){
+  return rows.filter(r => {
+    if(activeFilter !== 'ALL' && r.recommend !== activeFilter) return false;
+    const ltp = parseFloat(r.ltp);
+    if(ltpMin !== null && !isNaN(ltpMin) && (isNaN(ltp) || ltp < ltpMin)) return false;
+    if(ltpMax !== null && !isNaN(ltpMax) && (isNaN(ltp) || ltp > ltpMax)) return false;
+    return true;
+  });
+}
+function setFilter(f){
+  activeFilter = f;
+  document.querySelectorAll('.dcard').forEach(el => el.classList.remove('active'));
+  const card = document.getElementById('dcard-' + f);
+  if(card) card.classList.add('active');
+  render();
+}
+function applyLtpFilter(){
+  const minVal = document.getElementById('ltpMinInput').value;
+  const maxVal = document.getElementById('ltpMaxInput').value;
+  ltpMin = minVal === '' ? null : parseFloat(minVal);
+  ltpMax = maxVal === '' ? null : parseFloat(maxVal);
+  render();
+}
+function clearLtpFilter(){
+  document.getElementById('ltpMinInput').value = '';
+  document.getElementById('ltpMaxInput').value = '';
+  ltpMin = null; ltpMax = null;
+  render();
+}
+function updateDashboard(){
+  const counts = { ALL: rows.length, BUY: 0, SELL: 0, HOLD: 0 };
+  rows.forEach(r => { if(counts[r.recommend] !== undefined) counts[r.recommend]++; });
+  Object.keys(counts).forEach(k => {
+    const el = document.getElementById('dcount-' + k);
+    if(el) el.innerText = counts[k];
+  });
+}
+
+function render(){
+  updateDashboard();
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  const visible = getFilteredRows();
+  visible.forEach(r => {
+    const tr = document.createElement('tr');
+    const diff = computeDiff(r);
+    tr.innerHTML = `
+      <td class="name"><input value="${escapeHtml(r.name)}" onchange="updateField(${r.id},'name',this.value)"></td>
+      <td><input type="number" step="0.01" value="${r.ltp}" onchange="updateField(${r.id},'ltp',this.value)"></td>
+      <td><input type="number" step="0.01" value="${r.change}" onchange="updateField(${r.id},'change',this.value)"></td>
+      <td><input type="number" step="0.01" value="${r.percent}" onchange="updateField(${r.id},'percent',this.value)"></td>
+      <td><input type="number" step="0.01" value="${r.target}" onchange="updateField(${r.id},'target',this.value)"></td>
+      <td class="${diff.cls}" style="font-weight:600;white-space:nowrap;">${diff.str}</td>
+      <td><input type="number" step="0.01" value="${r.sl}" onchange="updateField(${r.id},'sl',this.value)"></td>
+      <td>
+        <select class="rec-${r.recommend}" onchange="updateField(${r.id},'recommend',this.value); this.className='rec-'+this.value;">
+          <option value="BUY" ${r.recommend==='BUY'?'selected':''}>BUY</option>
+          <option value="SELL" ${r.recommend==='SELL'?'selected':''}>SELL</option>
+          <option value="HOLD" ${r.recommend==='HOLD'?'selected':''}>HOLD</option>
+        </select>
+      </td>
+      <td class="reason"><input value="${escapeHtml(r.reason)}" onchange="updateField(${r.id},'reason',this.value)"></td>
+      <td class="del-col"><button class="del-btn" onclick="deleteRow(${r.id})">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  updateMeta();
+}
+function updateMeta(){
+  const visibleCount = getFilteredRows().length;
+  document.getElementById('rowCount').innerText =
+    (visibleCount === rows.length) ? rows.length : `${visibleCount} / ${rows.length}`;
+  document.getElementById('lastUpdated').innerText = new Date().toLocaleString('ta-IN');
+}
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function computeDiff(r){
+  const ltp = parseFloat(r.ltp);
+  const target = parseFloat(r.target);
+  if(isNaN(ltp) || isNaN(target) || ltp === 0) return { str: '-', cls: '' };
+  const diff = target - ltp;
+  const pct = (diff / ltp) * 100;
+  const sign = diff >= 0 ? '+' : '';
+  const cls = diff >= 0 ? 'rec-BUY' : 'rec-SELL';
+  return { str: `${sign}${diff.toFixed(2)} (${sign}${pct.toFixed(1)}%)`, cls };
+}
+function sortByLTP(){
+  rows.sort((a,b) => (parseFloat(a.ltp)||0) - (parseFloat(b.ltp)||0));
+  render();
+}
+function autoRecommend(){
+  rows.forEach(r => {
+    const ltp = parseFloat(r.ltp) || 0;
+    const pct = parseFloat(r.percent) || 0;
+    if(ltp <= 0) return;
+    if(pct >= 3){
+      r.recommend = 'BUY'; r.target=(ltp*1.05).toFixed(2); r.sl=(ltp*0.97).toFixed(2);
+      if(!r.reason) r.reason = 'அதிக வளர்ச்சி / Gainer';
+    } else if(pct <= -3){
+      r.recommend = 'SELL'; r.target=(ltp*0.95).toFixed(2); r.sl=(ltp*1.03).toFixed(2);
+      if(!r.reason) r.reason = 'வீழ்ச்சி / Loser - தவிர்க்கவும்';
+    } else {
+      r.recommend = 'HOLD'; r.target=(ltp*1.02).toFixed(2); r.sl=(ltp*0.98).toFixed(2);
+      if(!r.reason) r.reason = 'நடுநிலை மாற்றம்';
+    }
+  });
+  sortByLTP();
+}
+function clearAll(){
+  if(confirm('அனைத்து தரவையும் அழிக்கவா?')){ rows = []; stockMap = {}; document.getElementById('reportLog').innerHTML=''; render(); }
+}
+
+/* ================== GENERIC CSV PARSER (handles quoted newlines) ================== */
+function parseCSV(text){
+  text = text.replace(/^\uFEFF/, '');
+  const allRows = [];
+  let row = [], field = '', inQuotes = false;
+  for(let i=0;i<text.length;i++){
+    const c = text[i];
+    if(inQuotes){
+      if(c === '"'){
+        if(text[i+1] === '"'){ field += '"'; i++; }
+        else inQuotes = false;
+      } else field += c;
+    } else {
+      if(c === '"') inQuotes = true;
+      else if(c === ',') { row.push(field); field=''; }
+      else if(c === '\r'){ /* skip */ }
+      else if(c === '\n'){ row.push(field); allRows.push(row); row=[]; field=''; }
+      else field += c;
+    }
+  }
+  if(field.length>0 || row.length>0){ row.push(field); allRows.push(row); }
+  return allRows.filter(r => r.some(c => c && c.trim() !== ''));
+}
+function normHeader(h){ return (h||'').replace(/\uFEFF/g,'').replace(/\s+/g,' ').trim().toLowerCase(); }
+function cleanSymbol(v){ return (v||'').replace(/["\r\n]/g,'').trim().toUpperCase(); }
+function toNum(v){
+  if(v === undefined || v === null) return NaN;
+  const cleaned = String(v).replace(/["\r\n,]/g,'').trim();
+  return cleaned === '' ? NaN : parseFloat(cleaned);
+}
+function findIdx(headers, keywords){
+  return headers.findIndex(h => keywords.every(k => h.includes(k)));
+}
+
+/* ================== REPORT CLASSIFICATION ================== */
+function classify(filename, headers){
+  const fn = filename.toLowerCase();
+  if(fn.includes('pre-open') || fn.includes('pre open') || fn.includes('preopen') || fn.includes('mw-pre')) return 'PREMKT';
+  if(fn.includes('52week') && fn.includes('high')) return 'W52H';
+  if(fn.includes('52week') && fn.includes('low')) return 'W52L';
+  if(fn.includes('block')) return 'BLOCK';
+  if(fn.includes('bulk')) return 'BULK';
+  if(fn.includes('volume-gainers') || fn.includes('la-volume')) return 'VOLGAIN';
+  if(fn.includes('lower_band') || fn.includes('lower-band') || fn.includes('lowerband')) return 'LOWERBAND';
+  if(fn.includes('upper_band') || fn.includes('upper-band') || fn.includes('upperband')) return 'UPPERBAND';
+  if(fn.includes('price-spurts') || fn.includes('price_spurts')) return 'PRICESPURT';
+  if(fn.includes('volume-spurts') || fn.includes('volume_spurts')) return 'VOLSPURT';
+  if(fn.includes('looser') || fn.includes('loser')) return 'TOPLOSE';
+  if(fn.includes('gainer')) return 'TOPGAIN';
+
+  const hjoin = headers.join('|');
+  if(hjoin.includes('iep')) return 'PREMKT';
+  if(hjoin.includes('client name') && hjoin.includes('buy') && hjoin.includes('sell')) return 'BLOCK';
+  if(hjoin.includes('52w')) return hjoin.includes('high') ? 'W52H' : 'W52L';
+  if(hjoin.includes('price band')) return 'UPPERBAND';
+  return 'GENERIC';
+}
+
+/* ================== MERGE HELPERS ================== */
+function getOrCreate(sym){
+  if(!stockMap[sym]) stockMap[sym] = { symbol: sym, ltp: undefined, percent: undefined, score: 0, tags: new Set() };
+  return stockMap[sym];
+}
+function addTag(entry, label, score){
+  entry.tags.add(label);
+  entry.score += score;
+}
+
+/* ================== TYPE-SPECIFIC PROCESSORS ================== */
+function processStandard(type, headers, body){
+  const symbolIdx = findIdx(headers, ['symbol']);
+  const ltpIdx = findIdx(headers, ['ltp']);
+  const pctIdx = headers.findIndex(h => h.includes('chng'));
+  if(symbolIdx === -1) return 0;
+  let count = 0;
+  body.forEach(row => {
+    const sym = cleanSymbol(row[symbolIdx]);
+    if(!sym) return;
+    const ltp = toNum(row[ltpIdx]);
+    const pct = pctIdx > -1 ? toNum(row[pctIdx]) : NaN;
+    const entry = getOrCreate(sym);
+    if(!isNaN(ltp) && entry.ltp === undefined) entry.ltp = ltp;
+    if(!isNaN(pct) && entry.percent === undefined) entry.percent = pct;
+    addTag(entry, LABEL[type], SCORE[type]);
+    count++;
+  });
+  return count;
+}
+function processVolSpurt(headers, body){
+  const symbolIdx = findIdx(headers, ['symbol']);
+  if(symbolIdx === -1) return 0;
+  let count = 0;
+  body.forEach(row => {
+    const sym = cleanSymbol(row[symbolIdx]);
+    if(!sym) return;
+    const entry = getOrCreate(sym);
+    addTag(entry, LABEL.VOLSPURT, SCORE.VOLSPURT);
+    count++;
+  });
+  return count;
+}
+function processDeals(type, headers, body){
+  const symbolIdx = findIdx(headers, ['symbol']);
+  const sideIdx = headers.findIndex(h => h.includes('buy') && h.includes('sell'));
+  const priceIdx = headers.findIndex(h => h.includes('trade price') || h.includes('weighted'));
+  if(symbolIdx === -1) return 0;
+  let count = 0;
+  body.forEach(row => {
+    const sym = cleanSymbol(row[symbolIdx]);
+    if(!sym) return;
+    const side = (row[sideIdx] || '').replace(/["\r\n]/g,'').trim().toUpperCase();
+    const price = priceIdx > -1 ? toNum(row[priceIdx]) : NaN;
+    const entry = getOrCreate(sym);
+    if(!isNaN(price) && entry.ltp === undefined) entry.ltp = price;
+    if(side.includes('BUY')) addTag(entry, LABEL[type+'_BUY'], SCORE.DEAL_BUY);
+    else if(side.includes('SELL')) addTag(entry, LABEL[type+'_SELL'], SCORE.DEAL_SELL);
+    count++;
+  });
+  return count;
+}
+
+/* Pre-Open Market report: only ENRICHES stocks already shortlisted from other reports.
+   It never creates new rows by itself (the file covers the whole exchange, ~2000+ symbols). */
+function processPreMarket(headers, body){
+  const symbolIdx = headers.indexOf('symbol');
+  const iepIdx = headers.indexOf('iep');
+  const chngIdx = headers.indexOf('chng');
+  const pctIdx = headers.indexOf('%chng');
+  if(symbolIdx === -1) return { matched: 0, total: body.length };
+  let matched = 0;
+  body.forEach(row => {
+    const sym = cleanSymbol(row[symbolIdx]);
+    if(!sym || !stockMap[sym]) return; // skip stocks not already shortlisted
+    const entry = stockMap[sym];
+    const iep = iepIdx > -1 ? toNum(row[iepIdx]) : NaN;
+    const pct = pctIdx > -1 ? toNum(row[pctIdx]) : NaN;
+    const chng = chngIdx > -1 ? toNum(row[chngIdx]) : NaN;
+
+    if(!isNaN(iep) && iep > 0) entry.ltp = iep;               // today's expected open price
+    if(!isNaN(chng)) entry.change = chng.toFixed(2);
+    if(!isNaN(pct)){
+      entry.percent = pct;
+      if(pct >= 2) addTag(entry, 'Pre-Market Gap Up ▲', 2);
+      else if(pct <= -2) addTag(entry, 'Pre-Market Gap Down ▼', -2);
+      else addTag(entry, 'Pre-Market Flat', 0);
+    }
+    matched++;
+  });
+  return { matched, total: body.length };
+}
+
+/* ================== FILE HANDLING ================== */
+async function handleFiles(evt){
+  const files = Array.from(evt.target.files || []);
+  if(files.length === 0) return;
+
+  if(document.getElementById('resetBeforeImport').checked){
+    stockMap = {};
+    rows = [];
+  }
+
+  const logDiv = document.getElementById('reportLog');
+  logDiv.innerHTML = '<div>⏳ செயலாக்கம் நடக்கிறது...</div>';
+  const logLines = [];
+  const preMarketFiles = [];
+
+  // Pass 1: all standard reports (build the shortlist + scores first)
+  for(const file of files){
+    try{
+      const text = await file.text();
+      const parsed = parseCSV(text);
+      if(parsed.length < 2){ logLines.push(`<div class="tag-warn">⚠ ${file.name} - தரவு இல்லை</div>`); continue; }
+      const headers = parsed[0].map(normHeader);
+      const body = parsed.slice(1);
+      const type = classify(file.name, headers);
+
+      if(type === 'PREMKT'){ preMarketFiles.push({ name: file.name, headers, body }); continue; }
+
+      let count = 0;
+      if(type === 'VOLSPURT') count = processVolSpurt(headers, body);
+      else if(type === 'BLOCK' || type === 'BULK') count = processDeals(type, headers, body);
+      else if(SCORE[type] !== undefined) count = processStandard(type, headers, body);
+      else { logLines.push(`<div class="tag-warn">⚠ ${file.name} - வகை கண்டறியப்படவில்லை, தவிர்க்கப்பட்டது</div>`); continue; }
+
+      logLines.push(`<div class="tag-ok">✔ ${file.name} → ${typeNameTamil(type)} (${count} வரிசைகள்)</div>`);
+    } catch(err){
+      logLines.push(`<div class="tag-warn">⚠ ${file.name} - படிக்க முடியவில்லை</div>`);
+    }
+  }
+
+  // Pass 2: Pre-Market files (enrich already-shortlisted stocks with today's IEP/gap data)
+  preMarketFiles.forEach(pf => {
+    const res = processPreMarket(pf.headers, pf.body);
+    logLines.push(`<div class="tag-ok">✔ ${pf.name} → ${typeNameTamil('PREMKT')} (பொருந்தியவை: ${res.matched} / மொத்தம்: ${res.total})</div>`);
+  });
+
+  logDiv.innerHTML = logLines.join('');
+  buildRowsFromMap();
+  evt.target.value = '';
+}
+function typeNameTamil(type){
+  const map = {
+    W52H:'52 வார உச்சம்', W52L:'52 வார தாழ்வு', TOPGAIN:'Top Gainers',
+    TOPLOSE:'Top Losers', PRICESPURT:'Price Spurts', UPPERBAND:'Upper Circuit',
+    LOWERBAND:'Lower Circuit', VOLGAIN:'Volume Gainers', VOLSPURT:'Volume Spurts',
+    BLOCK:'Block Deals', BULK:'Bulk Deals', PREMKT:'Pre-Open Market', GENERIC:'பொது Report'
+  };
+  return map[type] || type;
+}
+
+/* ================== BUILD RECOMMENDATION TABLE FROM MAP ================== */
+function buildRowsFromMap(){
+  rows = [];
+  Object.values(stockMap).forEach(e => {
+    const ltp = e.ltp || 0;
+    const pct = e.percent !== undefined ? e.percent : '';
+    let change = e.change !== undefined ? e.change : '';
+    if(change === '' && ltp && e.percent !== undefined && !isNaN(e.percent)){
+      const prev = ltp / (1 + (e.percent/100));
+      change = (ltp - prev).toFixed(2);
+    }
+    let recommend, target, sl;
+    if(e.score >= 3){
+      recommend = 'BUY'; target = (ltp*1.05).toFixed(2); sl = (ltp*0.97).toFixed(2);
+    } else if(e.score <= -2){
+      recommend = 'SELL'; target = (ltp*0.95).toFixed(2); sl = (ltp*1.03).toFixed(2);
+    } else {
+      recommend = 'HOLD'; target = (ltp*1.02).toFixed(2); sl = (ltp*0.98).toFixed(2);
+    }
+    const reason = `${[...e.tags].join(', ')} (Score: ${e.score})`;
+    rows.push(newRow({
+      name: e.symbol, ltp: ltp || '', change, percent: pct,
+      target, sl, recommend, reason
+    }));
+  });
+  sortByLTP();
+}
+function recalcAll(){ buildRowsFromMap(); }
+
+/* ================== CSV IMPORT (single generic table CSV) ================== */
+function parseCSVLine(line){
+  const out = []; let cur='', inQ=false;
+  for(let i=0;i<line.length;i++){
+    const c = line[i];
+    if(c === '"'){ inQ = !inQ; continue; }
+    if(c === ',' && !inQ){ out.push(cur); cur=''; continue; }
+    cur += c;
+  }
+  out.push(cur);
+  return out.map(s => s.trim());
+}
+function importCSV(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result;
+    const lines = text.split(/\r?\n/).filter(l => l.trim() !== '');
+    if(lines.length === 0) return;
+    let startIdx = 0;
+    const firstCols = parseCSVLine(lines[0]).map(c => c.toLowerCase());
+    const looksLikeHeader = firstCols.some(c => c.includes('name') || c.includes('ltp') || c.includes('பெயர்'));
+    if(looksLikeHeader) startIdx = 1;
+    for(let i=startIdx;i<lines.length;i++){
+      const cols = parseCSVLine(lines[i]);
+      if(cols.length < 2) continue;
+      addRow({ name: cols[0]||'', ltp: cols[1]||'', change: cols[2]||'', percent: (cols[3]||'').replace('%','') });
+    }
+    sortByLTP();
+    evt.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+/* ================== JSON IMPORT/EXPORT ================== */
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(rows, null, 2)], {type:'application/json'});
+  downloadBlob(blob, `pangu_pariturai_${dateStamp()}.json`);
+}
+function importJSON(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const data = JSON.parse(e.target.result);
+      if(Array.isArray(data)){ data.forEach(d => addRow(d)); sortByLTP(); }
+    }catch(err){ alert('JSON கோப்பு தவறாக உள்ளது'); }
+    evt.target.value = '';
+  };
+  reader.readAsText(file);
+}
+function exportCSV(){
+  const header = ['Name','LTP','Change','Percent','Target','Diff(LTP-Target)','StopLoss','Recommend','Reason'];
+  const lines = [header.join(',')];
+  rows.forEach(r => {
+    const diff = computeDiff(r);
+    lines.push([r.name,r.ltp,r.change,r.percent,r.target,diff.str,r.sl,r.recommend,r.reason]
+      .map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+  });
+  const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+  downloadBlob(blob, `pangu_pariturai_${dateStamp()}.csv`);
+}
+function downloadBlob(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function dateStamp(){
+  const d = new Date();
+  return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+}
+function todayISO(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+/* ================== PRINT / WHATSAPP ================== */
+function printReport(){
+  document.getElementById('printDate').innerText =
+    'தேதி: ' + new Date().toLocaleDateString('ta-IN') + ' | நேரம்: ' + new Date().toLocaleTimeString('ta-IN');
+
+  const printDiv = document.getElementById('printTable');
+  let html = '<table><thead><tr>' +
+    '<th>பங்கு பெயர்</th><th>LTP</th><th>மாற்றம்</th><th>%</th>' +
+    '<th>இலக்கு</th><th>வித்தியாசம்</th><th>Stop Loss</th><th>பரிந்துரை</th><th>காரணம்</th>' +
+    '</tr></thead><tbody>';
+
+  rows.forEach(r => {
+    const diff = computeDiff(r);
+    const diffCls = diff.cls === 'rec-BUY' ? 'prec-BUY' : (diff.cls === 'rec-SELL' ? 'prec-SELL' : '');
+    html += '<tr>' +
+      `<td class="pname">${escapeHtml(r.name)}</td>` +
+      `<td>${escapeHtml(r.ltp)}</td>` +
+      `<td>${escapeHtml(r.change)}</td>` +
+      `<td>${escapeHtml(r.percent)}</td>` +
+      `<td>${escapeHtml(r.target)}</td>` +
+      `<td class="${diffCls}">${diff.str}</td>` +
+      `<td>${escapeHtml(r.sl)}</td>` +
+      `<td class="prec-${r.recommend}">${r.recommend}</td>` +
+      `<td class="preason">${escapeHtml(r.reason)}</td>` +
+      '</tr>';
+  });
+  html += '</tbody></table>';
+  printDiv.innerHTML = html;
+
+  window.print();
+}
+function shareWhatsApp(){
+  if(rows.length === 0){ alert('பரிந்துரைகள் எதுவும் இல்லை'); return; }
+  let text = `*தாஸ் பொது சேவை மையம் - பங்கு பரிந்துரை*\n`;
+  text += `தேதி: ${new Date().toLocaleDateString('ta-IN')}\n\n`;
+  rows.forEach(r => {
+    const diff = computeDiff(r);
+    text += `📌 *${r.name}*\n`;
+    text += `LTP: ${r.ltp} | மாற்றம்: ${r.change} (${r.percent}%)\n`;
+    text += `இலக்கு: ${r.target} | வித்தியாசம்: ${diff.str} | SL: ${r.sl}\n`;
+    text += `பரிந்துரை: *${r.recommend}*`;
+    if(r.reason) text += ` - ${r.reason}`;
+    text += `\n\n`;
+  });
+  text += `_இது தானியங்கி கணக்கீடு, சொந்த ஆய்வுடன் முடிவெடுக்கவும்._`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+/* ================== DAY-WISE SAVE / LOAD ================== */
+function saveDay(){
+  const dateVal = document.getElementById('saveDate').value || todayISO();
+  const key = STORAGE_PREFIX + dateVal;
+  try{
+    localStorage.setItem(key, JSON.stringify(rows));
+    updateSavedDatesList();
+    alert('சேமிக்கப்பட்டது: ' + dateVal + ' (' + rows.length + ' பங்குகள்)');
+  }catch(e){
+    alert('சேமிப்பில் பிழை - browser storage நிறைந்திருக்கலாம்');
+  }
+}
+function updateSavedDatesList(){
+  const dates = Object.keys(localStorage)
+    .filter(k => k.startsWith(STORAGE_PREFIX))
+    .map(k => k.replace(STORAGE_PREFIX,''))
+    .sort().reverse();
+  const sel = document.getElementById('savedDatesSelect');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">-- தேர்வு செய்யவும் --</option>' +
+    dates.map(d => `<option value="${d}">${d}</option>`).join('');
+  if(dates.includes(cur)) sel.value = cur;
+}
+function loadDay(){
+  const d = document.getElementById('savedDatesSelect').value;
+  if(!d) { alert('ஒரு தேதியை தேர்வு செய்யவும்'); return; }
+  const data = localStorage.getItem(STORAGE_PREFIX + d);
+  if(!data) return;
+  try{
+    const parsed = JSON.parse(data);
+    rows = [];
+    stockMap = {};
+    parsed.forEach(p => addRow(p));
+  }catch(e){ alert('தரவு ஏற்றுவதில் பிழை'); }
+}
+function deleteDay(){
+  const d = document.getElementById('savedDatesSelect').value;
+  if(!d) return;
+  if(confirm(d + ' தேதியின் தரவை நீக்கவா?')){
+    localStorage.removeItem(STORAGE_PREFIX + d);
+    updateSavedDatesList();
+  }
+}
+
+/* ================== INIT ================== */
+document.getElementById('saveDate').value = todayISO();
+updateSavedDatesList();
+document.getElementById('dcard-ALL').classList.add('active');
+render();
+</script>
+
+</body>
+</html>
